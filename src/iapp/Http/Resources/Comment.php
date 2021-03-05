@@ -16,13 +16,30 @@ class Comment extends Resource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['parent'] = [
-            'title' => $this->parent->title,
-            'value' => $this->parent->serial,
-        ];
+        if ($this->parent_id)
+            $data['parent_id'] = [
+                'title' => $this->parent->title,
+                'value' => $this->parent->serial,
+                'id' => $this->parent->serial,
+            ];
+        if ($this->creator_id)
+            $data['creator_id'] = [
+                'title' => $this->creator->fullname,
+                'value' => $this->creator->serial,
+                'id' => $this->creator->serial,
+            ];
+        request()->merge(['no_actions' => true]);
+        $data['replays'] = self::collection($this->replays);
+        if (isset($this->approved_at) && $this->approved_at)
+            $data['approved_at'] = str_replace('-', '/', $this->approved_at);
+        $typeModel = imodal('Type');
+        $type = $typeModel::findByName($this->type);
+        $data['type'] = $type? [
+            'text' => $type->title,
+            'value' => $type->name,
+            'id' => $type->serial,
+        ]: $this->type;
         unset($data['poll_entries']);
-        unset($data['parent_id']);
-        unset($data['creator_id']);
         return $data;
     }
 }

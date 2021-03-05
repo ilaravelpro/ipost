@@ -21,11 +21,12 @@ class CreateCommentsTable extends Migration
             $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
             $table->string('name')->nullable();
             $table->longText('text')->nullable();
-            $table->string('score')->nullable();
-            $table->string('like')->nullable();
+            $table->integer('star')->nullable();
+            $table->boolean('like')->nullable();
             $table->string('type')->nullable();
+            $table->bigInteger('item')->nullable();
             $table->longText('data')->nullable();
-            $table->string('status')->default('draft');
+            $table->string('status')->default('pending');
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });

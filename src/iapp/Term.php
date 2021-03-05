@@ -34,6 +34,9 @@ class Term extends \iLaravel\Core\iApp\Model
                 $event->saveFiles($event->files, request());
             }
         });
+        static::deleted(function (self $event) {
+            $event->kids()->detach();
+        });
     }
 
     public function getImageAttribute()

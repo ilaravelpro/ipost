@@ -26,7 +26,7 @@ class CommentController extends Controller
         Update,
         Destroy,
         Comment\Filters,
-        \iLaravel\Core\iApp\Http\Controllers\API\v1\Post\QueryFilterType,
-        \iLaravel\Core\iApp\Http\Controllers\API\v1\Post\RequestFilter,
-        \iLaravel\Core\iApp\Http\Controllers\API\v1\Post\RequestData;
+        Comment\QueryFilterType,
+        Comment\RequestFilter,
+        Comment\RequestData;
 }
