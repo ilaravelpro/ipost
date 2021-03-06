@@ -14,12 +14,14 @@ trait RequestFilter
 {
     public function requestFilter($request, $model, $parent, $current, $filters, $operators)
     {
-        $filters[count($filters) - 1]['rule'] = function ($filter) {
+        $filters[7]['rule'] = function ($filter) {
             (new Request((array) $filter))->validate([
                 'value' =>  'required|exists_serial:Comment',
             ]);
             return $filter;
         };
+        if (method_exists($this->model, 'getRuleItem'))
+            $filters = $this->model::getRuleItem($request, $model, $parent, $current, $filters, $operators);
         list($filters, $current) = parent::requestFilter($request, $model, $parent, $current, $filters, $operators);
         $parentSet = $request->has('parent') ? (boolean) $request->parent : true;
         if ((!isset($current['parent']) || !$current['parent']) && $parentSet){

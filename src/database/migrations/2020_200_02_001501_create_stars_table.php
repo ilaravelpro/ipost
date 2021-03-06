@@ -18,6 +18,8 @@ class CreateStarsTable extends Migration
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');
             $table->integer('star');
+            $table->string('type')->nullable();
+            $table->bigInteger('item')->nullable();
             $table->timestamps();
         });
     }

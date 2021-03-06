@@ -18,6 +18,8 @@ class CreateLikesTable extends Migration
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');
             $table->boolean('like');
+            $table->string('type')->nullable();
+            $table->bigInteger('item')->nullable();
             $table->timestamps();
         });
     }

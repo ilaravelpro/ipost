@@ -10,7 +10,7 @@ namespace iLaravel\iPost\iApp\Http\Controllers\API\v1\Comment;
 
 trait QueryFilterType
 {
-    public function query_filter_type($model, $filter, $params, $current)
+    public function query_filter_type($model, $filter, $params, $current, $filters)
     {
         switch ($params->type) {
             case 'parent':
@@ -19,6 +19,12 @@ trait QueryFilterType
                     $model->where('parent_id', is_integer($parent) ? $parent : $parent->id);
                     $current['parent'] = $filter->value;
                 }
+                break;
+            case 'item':
+                if (method_exists($this->model, 'getRuleItemQueryFilter'))
+                    $current = $this->model::getRuleItemQueryFilter($model, $filter, $params, $current, $filters);
+                else
+                    $current['item'] = $filter->value;
                 break;
         }
         return $current;

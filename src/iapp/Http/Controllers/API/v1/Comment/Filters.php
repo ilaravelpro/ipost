@@ -47,6 +47,11 @@ trait Filters
                 'type' => 'text',
             ],
             [
+                'name' => 'item',
+                'title' => _t('item'),
+                'type' => 'text',
+            ],
+            [
                 'name' => 'parent',
                 'title' => _t('parent'),
                 'type' => 'text',
