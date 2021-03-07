@@ -31,6 +31,7 @@ class Star extends \iLaravel\Core\iApp\Model
                 $rules = array_merge($rules, [
                     'creator_id' => "nullable|exists:users,id",
                     'star' => "required|numeric|min:1|max:5",
+                    'type' => 'required|exists:types,name',
                 ]);
                 break;
         }

@@ -18,7 +18,8 @@ class Comment extends \iLaravel\Core\iApp\Model
 
     protected $casts = [
         'approved_at' => 'timestamp',
-        'data' => 'array'
+        'data' => 'array',
+        'like' => 'boolean',
     ];
 
     public $datetime = [
@@ -38,7 +39,7 @@ class Comment extends \iLaravel\Core\iApp\Model
             }
         });
         static::deleted(function (self $event) {
-            $event->delete();
+            $event->replays()->delete();
         });
     }
 

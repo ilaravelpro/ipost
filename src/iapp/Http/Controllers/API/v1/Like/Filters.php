@@ -8,7 +8,7 @@
  * Copyright (c) 2020. Powered by iamir.net
  */
 
-namespace iLaravel\iPost\iApp\Http\Controllers\API\v1\Comment;
+namespace iLaravel\iPost\iApp\Http\Controllers\API\v1\Like;
 
 
 trait Filters
@@ -19,21 +19,6 @@ trait Filters
             [
                 'name' => 'all',
                 'title' => _t('all'),
-                'type' => 'text',
-            ],
-            [
-                'name' => 'name',
-                'title' => _t('name'),
-                'type' => 'text',
-            ],
-            [
-                'name' => 'text',
-                'title' => _t('text'),
-                'type' => 'text',
-            ],
-            [
-                'name' => 'star',
-                'title' => _t('star'),
                 'type' => 'text',
             ],
             [
@@ -50,16 +35,6 @@ trait Filters
                 'name' => 'item',
                 'title' => _t('item'),
                 'type' => 'text',
-            ],
-            [
-                'name' => 'parent',
-                'title' => _t('parent'),
-                'type' => 'text',
-            ],
-            [
-                'name' => 'approved_at',
-                'title' => _t('approved datetime'),
-                'type' => 'datetime',
             ],
         ];
         return [$filters, [], $operators];

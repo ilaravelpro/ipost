@@ -17,6 +17,10 @@ class Like extends \iLaravel\Core\iApp\Model
     public static $s_start = 24300000;
     public static $s_end = 728999999;
 
+    protected $casts = [
+        'like' => 'boolean',
+    ];
+
     public function creator()
     {
         return $this->belongsTo(imodal('User'));
@@ -30,7 +34,8 @@ class Like extends \iLaravel\Core\iApp\Model
             case 'update':
                 $rules = array_merge($rules, [
                     'creator_id' => "nullable|exists:users,id",
-                    'like' => "required|boolean",
+                    'like' => "nullable|boolean",
+                    'type' => 'required|exists:types,name',
                 ]);
                 break;
         }

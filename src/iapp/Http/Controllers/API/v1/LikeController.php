@@ -16,17 +16,17 @@ use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Store;
 use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Update;
 use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Destroy;
 
-class CommentController extends Controller
+class LikeController extends Controller
 {
-    public $order_list = ['id', 'title','slug','description','star','like','status',];
+    public $order_list = ['id', 'like',];
 
     use Index,
         Show,
         Store,
         Update,
         Destroy,
-        Comment\Filters,
-        Comment\QueryFilterType,
-        Comment\RequestFilter,
-        Comment\RequestData;
+        Like\Filters,
+        Star\QueryFilterType,
+        Star\RequestFilter,
+        Star\RequestData;
 }

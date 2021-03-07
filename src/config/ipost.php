@@ -15,6 +15,8 @@ return [
             'tags' => ['status' => true],
             'terms' => ['status' => true],
             'comments' => ['status' => true],
+            'stars' => ['status' => true],
+            'likes' => ['status' => true],
         ]
     ],
     'database' => [
@@ -25,6 +27,8 @@ return [
             'tags' => ['include' => true],
             'comments' => ['include' => true],
             'comments_poll_entries' => ['include' => true],
+            'stars' => ['include' => true],
+            'likes' => ['include' => true],
         ],
     ],
 ];

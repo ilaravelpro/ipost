@@ -20,6 +20,7 @@ class CreateLikesTable extends Migration
             $table->boolean('like');
             $table->string('type')->nullable();
             $table->bigInteger('item')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ class CreateStarsTable extends Migration
             $table->integer('star');
             $table->string('type')->nullable();
             $table->bigInteger('item')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }
