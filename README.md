@@ -1,2 +1,2 @@
 # ipost
-Auto Pro
+iPost Pro
