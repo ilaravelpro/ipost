@@ -25,6 +25,12 @@ trait RequestData
             $userModel = imodal('User');
             $data['creator_id'] = $userModel::id($data['creator_id']);
         }
+        if (in_array($action, ['store']) && !isset($data['creator_id'])) {
+            $data['creator_id'] = auth()->id();
+        }
+        if (in_array($action, ['store']) && !isset($data['name'])) {
+            $data['name'] = auth()->user()->fullname;
+        }
         if (in_array($action, ['store', 'update']) && isset($data['replays']) && is_array($data['replays']) && count($data['replays'])) {
             $userModel = imodal('User');
             foreach ($data['replays'] as $index => $replay) {

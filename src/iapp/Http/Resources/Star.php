@@ -18,7 +18,7 @@ class Star extends Resource
         $data = parent::toArray($request);
         if ($this->creator_id)
             $data['creator_id'] = [
-                'title' => $this->creator->fullname,
+                'text' => $this->creator->fullname,
                 'value' => $this->creator->serial,
                 'id' => $this->creator->serial,
             ];

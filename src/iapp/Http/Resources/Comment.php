@@ -18,13 +18,13 @@ class Comment extends Resource
         $data = parent::toArray($request);
         if ($this->parent_id)
             $data['parent_id'] = [
-                'title' => $this->parent->title,
+                'text' => $this->parent->name,
                 'value' => $this->parent->serial,
                 'id' => $this->parent->serial,
             ];
         if ($this->creator_id)
             $data['creator_id'] = [
-                'title' => $this->creator->fullname,
+                'text' => $this->creator->fullname,
                 'value' => $this->creator->serial,
                 'id' => $this->creator->serial,
             ];

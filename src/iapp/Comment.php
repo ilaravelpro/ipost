@@ -89,6 +89,7 @@ class Comment extends \iLaravel\Core\iApp\Model
         ];
         switch ($action) {
             case 'store':
+                $rules = ["parent_id" => "nullable|exists:comments,id",];
             case 'update':
                 $rules = array_merge($rules, [
                     "creator_id" => "nullable|exists:users,id",
@@ -96,10 +97,11 @@ class Comment extends \iLaravel\Core\iApp\Model
                     'text' => "required|string",
                     'star' => "nullable|numeric|min:0|max:5",
                     'like' => "nullable|boolean",
-                    'type' => 'required|exists:types,name',
                     'approved_at' => "nullable|date_format:Y-m-d H:i:s",
                     'status' => 'nullable|in:' . join(iconfig('status.comments', iconfig('status.global')), ','),
                 ], $additionalRules);
+                if (!$request->parent_id)
+                    $rules['type'] = 'required|exists:types,name';
                 break;
             case 'additional':
                 $rules = $additionalRules;
