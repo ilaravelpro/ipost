@@ -14,8 +14,8 @@ trait QueryFilterType
     {
         switch ($params->type) {
             case 'item':
-                if (method_exists($this->model, 'getRuleItemQueryFilter'))
-                    $current = $this->model::getRuleItemQueryFilter($model, $filter, $params, $current, $filters);
+                if (method_exists($this->model, 'getItemQueryFilter'))
+                    $current = $this->model::getItemQueryFilter($model, $filter, $params, $current, $filters);
                 else
                     $current['item'] = $filter->value;
                 break;

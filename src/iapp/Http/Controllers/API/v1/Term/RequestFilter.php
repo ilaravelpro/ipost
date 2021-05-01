@@ -15,7 +15,7 @@ trait RequestFilter
 {
     public function requestFilter($request, $model, $parent, $current, $filters, $operators)
     {
-        $filters[count($filters) - 1]['rule'] = function ($filter) {
+        $filters[array_search('parents', array_keys($filters))]['rule'] = function ($filter) {
             $filter->value = is_array($filter->value) ? $filter->value : (is_json($filter->value) ? json_decode($filter->value): explode(',',$filter->value));
             foreach ($filter->value as $index => $parent)
                 $filter->value[$index] = isset($parent['value']) ? $parent['value'] : $parent;
@@ -33,7 +33,7 @@ trait RequestFilter
                     },
                 ])
                 ->setBindings($query->getBindings(), 'where')
-                ->whereRaw("({$query->toSql()}) = ?", 0);
+                ->whereRaw("({$query->toSql()}) = 0");
         }
         return [$filters, $current];
     }
