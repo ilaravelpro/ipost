@@ -20,11 +20,11 @@ class AppServiceProvider extends ServiceProvider
         {
             if (ipost('database.migrations.include', true)) $this->loadMigrationsFrom(ipost_path('database/migrations'));
         }
+        $this->mergeConfigFrom(ipost_path('config/ipost.php'), 'ilaravel.main.ipost');
     }
 
     public function register()
     {
         parent::register();
-        $this->mergeConfigFrom(ipost_path('config/ipost.php'), 'ilaravel.ipost');
     }
 }

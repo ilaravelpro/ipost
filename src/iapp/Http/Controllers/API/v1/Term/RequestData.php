@@ -16,12 +16,17 @@ trait RequestData
     {
         if (in_array($action, ['store']))
             $data['creator_id'] = auth()->id();
-        if (in_array($action, ['store', 'update']) && isset($data['parents'])) {
-            foreach ($data['parents'] as $index => $parent)
-                $data['parents'][$index] = is_array($parent) && isset($parent['value']) ? $parent['value'] : $parent;
-        }
-        if (in_array($action, ['store', 'update']) && isset($data['type'])) {
-            $data['type'] = is_array($data['type']) && isset($data['type']['value']) ? $data['type']['value'] : $data['type'];
+        if (in_array($action, ['store', 'update'])) {
+            if (isset($data['parents']) && is_array($data['parents'])) {
+                foreach ($data['parents'] as $index => $parent)
+                    $data['parents'][$index] = is_array($parent) && isset($parent['value']) ? $parent['value'] : $parent;
+            }
+            if (isset($data['type'])) {
+                $data['type'] = is_array($data['type']) && isset($data['type']['value']) ? $data['type']['value'] : $data['type'];
+            }
+            if (isset($data['title']) && (!isset($data['slug']) || (isset($data['slug']) && !strlen($data['slug'])))) {
+                $data['slug'] = to_slug($data['title']);
+            }
         }
     }
 }

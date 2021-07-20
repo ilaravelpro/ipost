@@ -25,11 +25,6 @@ class Term extends \iLaravel\Core\iApp\Model
         parent::boot();
         static::saving(function (self $event) {
             $TermPolicy = ipolicy('TermPolicy');
-            $event->parents()->detach();
-            $event->parents()->attach(array_map(function($parent) use ($event){
-                return $event::id($parent);
-            }, $event->attributes['parents']));
-            unset($event->attributes['parents']);
             if ((new $TermPolicy())->update(auth()->user(), $event) || (new $TermPolicy())->create(auth()->user(), $event) ){
                 $event->saveFiles($event->files, request());
             }
@@ -65,13 +60,13 @@ class Term extends \iLaravel\Core\iApp\Model
         $rules = [];
         $additionalRules = [
             'image_file' => 'nullable|mimes:jpeg,jpg,png,gif|max:5120|dimensions:ratio=1',
+            'parents.*' => "nullable|exists_serial:Term",
         ];
         switch ($action) {
             case 'store':
                 $rules = ["creator_id" => "required|exists:users,id"];
             case 'update':
                 $rules = array_merge($rules,$additionalRules, [
-                    'parents.*' => "nullable|exists_serial:Term",
                     'title' => "required|string",
                     'slug' => ['required','slug'],
                     'type' => 'required|exists:types,name',
@@ -90,5 +85,16 @@ class Term extends \iLaravel\Core\iApp\Model
                 break;
         }
         return $rules;
+    }
+
+    public static function findBySlug($slug)
+    {
+        return static::where('slug', $slug)->first();
+    }
+
+    public static function slug($slug)
+    {
+        $item = static::findBySlug($slug);
+        return $item ? $item->id : null;
     }
 }
