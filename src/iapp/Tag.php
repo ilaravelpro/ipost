@@ -28,7 +28,7 @@ class Tag extends \iLaravel\Core\iApp\Model
                 $rules = array_merge($rules, [
                     'title' => "required|string",
                     'slug' => ['nullable','slug'],
-                    'status' => 'nullable|in:' . join(iconfig('status.tags', iconfig('status.global')), ','),
+                    'status' => 'nullable|in:' . join(',', iconfig('status.tags', iconfig('status.global'))),
                 ]);
                 $rules['slug'][] = Rule::unique('tags')->where(function ($query) use ($request, $arg1) {
                     if ($arg1)

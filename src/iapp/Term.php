@@ -72,7 +72,7 @@ class Term extends \iLaravel\Core\iApp\Model
                     'type' => 'required|exists:types,name',
                     'description' => "nullable|string",
                     'icon' => "nullable|string",
-                    'status' => 'nullable|in:' . join(iconfig('status.terms', iconfig('status.global')), ','),
+                    'status' => 'nullable|in:' . join(',', iconfig('status.terms', iconfig('status.global'))),
                 ]);
                 $rules['slug'][] = Rule::unique('terms')->where(function ($query) use ($request, $arg1) {
                     if ($arg1)

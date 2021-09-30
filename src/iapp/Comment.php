@@ -85,7 +85,7 @@ class Comment extends \iLaravel\Core\iApp\Model
             'replays.*.name' => "required|string",
             'replays.*.text' => "required|string",
             'replays.*.approved_at' => "nullable|date_format:Y-m-d H:i:s",
-            'replays.*.status' => 'nullable|in:' . join(iconfig('status.comments', iconfig('status.global')), ','),
+            'replays.*.status' => 'nullable|in:' . join(',', iconfig('status.comments', iconfig('status.global'))),
         ];
         switch ($action) {
             case 'store':
@@ -98,7 +98,7 @@ class Comment extends \iLaravel\Core\iApp\Model
                     'star' => "nullable|numeric|min:0|max:5",
                     'like' => "nullable|boolean",
                     'approved_at' => "nullable|date_format:Y-m-d H:i:s",
-                    'status' => 'nullable|in:' . join(iconfig('status.comments', iconfig('status.global')), ','),
+                    'status' => 'nullable|in:' . join(',', iconfig('status.comments', iconfig('status.global'))),
                 ], $additionalRules);
                 if (!$request->parent_id)
                     $rules['type'] = 'required|exists:types,name';

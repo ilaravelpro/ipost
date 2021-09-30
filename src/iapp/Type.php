@@ -54,7 +54,7 @@ class Type extends \iLaravel\Core\iApp\Model
                     'title' => "required|string",
                     'name' => ['required','slug'],
                     'description' => "nullable|string",
-                    'status' => 'nullable|in:' . join(iconfig('status.types', iconfig('status.global')), ','),
+                    'status' => 'nullable|in:' . join(',', iconfig('status.types', iconfig('status.global'))),
                 ]);
                 $rules['name'][] = Rule::unique('types')->where(function ($query) use ($request, $arg1) {
                     if ($arg1)
