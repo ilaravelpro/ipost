@@ -13,6 +13,7 @@ use Illuminate\Validation\Rule;
 class Term extends \iLaravel\Core\iApp\Model
 {
     protected $guarded = ['id'];
+    public static $find_names = ['slug', 'title'];
 
     public static $s_prefix = "IPT";
     public static $s_start = 24300000;
@@ -23,20 +24,9 @@ class Term extends \iLaravel\Core\iApp\Model
     protected static function boot()
     {
         parent::boot();
-        static::saving(function (self $event) {
-            $TermPolicy = ipolicy('TermPolicy');
-            if ((new $TermPolicy())->update(auth()->user(), $event) || (new $TermPolicy())->create(auth()->user(), $event) ){
-                $event->saveFiles($event->files, request());
-            }
-        });
         static::deleted(function (self $event) {
             $event->kids()->detach();
         });
-    }
-
-    public function getImageAttribute()
-    {
-        return $this->getFile('image');
     }
 
     public function creator()
@@ -59,32 +49,49 @@ class Term extends \iLaravel\Core\iApp\Model
         $arg1 = is_string($arg1) ? $this::findBySerial($arg1) : $arg1;
         $rules = [];
         $additionalRules = [
-            'image_file' => 'nullable|mimes:jpeg,jpg,png,gif|max:5120|dimensions:ratio=1',
+            'image_file' => 'nullable|mimes:jpeg,jpg,png,gif|max:5120',
             'parents.*' => "nullable|exists_serial:Term",
         ];
+        if (isset($request->locals) && count($request->locals) && $modal_translate = imodal('TermTranslate')) {
+            foreach ($request->locals as $local => $local_data) {
+                $local_item = $arg1 && $arg1->translates ? $arg1->translates->where('local', $local)->first() : null;
+                $local_rules = $modal_translate::getRules((new Request())->merge(array_merge($local_data, ['local' => $local])), 'update', $local_item ? : null);
+                foreach ($local_rules as $local_rule_name => $local_rule) {
+                    if ($local_rule_name !== 'local')
+                    $additionalRules["locals.$local.$local_rule_name"] = $local_rule;
+                }
+            }
+        }
+        //|dimensions:ratio=1
         switch ($action) {
             case 'store':
                 $rules = ["creator_id" => "required|exists:users,id"];
             case 'update':
-                $rules = array_merge($rules,$additionalRules, [
+                $rules = array_merge($rules, [
                     'title' => "required|string",
-                    'slug' => ['required','slug'],
+                    'slug' => ["nullable","slug:en,fa,num", Rule::unique('terms')->where(function ($query) use ($request, $arg1) {
+                        if ($arg1)
+                            $query->where('id', '!=', $arg1->id);
+                        $query->where('slug', $request->slug? : $arg1->slug)->where('type', $request->type ? : $arg1->type);
+                    })],
                     'type' => 'required|exists:types,name',
+                    'template' => "nullable|string|in:classic,custom",
                     'description' => "nullable|string",
+                    'content' => "nullable",
                     'icon' => "nullable|string",
                     'status' => 'nullable|in:' . join(',', iconfig('status.terms', iconfig('status.global'))),
-                ]);
-                $rules['slug'][] = Rule::unique('terms')->where(function ($query) use ($request, $arg1) {
-                    if ($arg1)
-                        $query->where('id', '!=', $arg1->id);
-                    $query->where('slug', $request->slug? : $arg1->slug)->where('type', $request->type ? : $arg1->type);
-                });
+                ], $additionalRules);
                 break;
             case 'additional':
                 $rules = $additionalRules;
                 break;
         }
         return $rules;
+    }
+
+    protected function getTextTitleAttribute()
+    {
+        return $this->parent ? implode('->', [$this->parent->text_title, $this->title]) : $this->title;
     }
 
     public static function findBySlug($slug)

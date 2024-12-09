@@ -10,6 +10,7 @@
 namespace iLaravel\iPost\iApp\Http\Resources;
 
 use iLaravel\Core\iApp\Http\Resources\Resource;
+use iLaravel\Core\iApp\Http\Resources\ResourceData;
 
 class Comment extends Resource
 {
@@ -30,10 +31,11 @@ class Comment extends Resource
             ];
         request()->merge(['no_actions' => true]);
         $data['replays'] = self::collection($this->replays);
-        if (isset($this->approved_at) && $this->approved_at)
-            $data['approved_at'] = str_replace('-', '/', $this->approved_at);
+        /*if (isset($data['approved_at']) && $data['approved_at'])
+            $data['approved_at'] = str_replace('-', '/', $data['approved_at'])*/;
         $typeModel = imodal('Type');
         $type = $typeModel::findByName($this->type);
+        $data['item'] = $this->item_model ? new (iresourcedata($this->item_model_title)?:ResourceData::class)($this->item_model) : null;
         $data['type'] = $type? [
             'text' => $type->title,
             'value' => $type->name,

@@ -31,5 +31,13 @@ return [
             'likes' => ['include' => true],
         ],
     ],
+    'items' => [
+        'product' => [
+            'model' => 'Product',
+        ],
+        'book' => [
+            'model' => 'Book',
+        ],
+    ],
 ];
 ?>

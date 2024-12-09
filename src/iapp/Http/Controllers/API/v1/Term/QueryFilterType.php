@@ -13,14 +13,15 @@ trait QueryFilterType
     {
         switch ($params->type) {
             case 'parents':
+            case 'parent':
                 $parents = array_map(function ($parent) {
                     return $this->model::id($parent) ? : $this->model::slug($parent);
                 }, is_array($filter->value) ? $filter->value : [$filter->value]);
                 if (count($parents)){
                     $model->whereHas('parents', function ($query) use ($parents) {
-                        $query->whereIn('id', $parents);
+                        $query->whereIn('terms_kids.term_id', $parents);
                     });
-                    $current['parents'] = $filter->value;
+                    $current[$params->type] = $filter->value;
                 }
                 break;
         }

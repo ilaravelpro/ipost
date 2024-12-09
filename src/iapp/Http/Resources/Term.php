@@ -17,24 +17,17 @@ class Term extends Resource
     {
         $data = parent::toArray($request);
         $data['parents'] = $this->parents->map(function ($parent) {
-           return [
-               'text' => $parent->title,
-               'value' => $parent->serial
-           ];
-        });
-        $data['kids'] = $this->kids->map(function ($kid) {
             return [
-                'text' => $kid->title,
-                'value' => $kid->serial
+                'text' => $parent->title,
+                'value' => $parent->serial,
+                'id' => $parent->serial,
             ];
         });
+        $data['text'] = $this->title;
+        $data['kids'] = TermData::collection($this->kids);
         $typeModel = imodal('Type');
-        $type = $typeModel::findByName($this->type);
-        $data['type'] = $type? [
-            'text' => $type->title,
-            'value' => $type->name,
-            'id' => $type->serial,
-        ]: $this->type;
+        $typeResource = iresourcedata('Type');
+        $data['type'] = ($type = $typeModel::findByName($this->type)) ? new $typeResource($type): $this->type;
         unset($data['creator_id']);
         unset($data['image_id']);
         return $data;

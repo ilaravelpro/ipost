@@ -46,7 +46,13 @@ trait Filters
                 'title' => _t('parents'),
                 'type' => 'hidden',
             ],
+            [
+                'name' => 'parent_id',
+                'title' => _t('parent'),
+                'type' => 'hidden',
+            ],
         ];
+        $model->with('kids');
         return [$filters, [], $operators];
     }
 }

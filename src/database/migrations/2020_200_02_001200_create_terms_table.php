@@ -23,7 +23,9 @@ class CreateTermsTable extends Migration
             $table->string('slug')->nullable();
             $table->string('icon')->nullable();
             $table->string('type')->nullable();
-            $table->string('description')->nullable();
+            $table->string('template')->nullable();
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
             $table->string('status')->default('active');
             $table->timestamps();
         });

@@ -27,6 +27,7 @@ class TermController extends Controller
         Update,
         Destroy,
         Data,
+        Term\Except,
         Term\AfterSave,
         Term\Filters,
         Term\QueryFilterType,

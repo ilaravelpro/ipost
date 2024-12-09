@@ -62,6 +62,7 @@ trait Filters
                 'type' => 'datetime',
             ],
         ];
+        $model->with(['stars']);
         return [$filters, [], $operators];
     }
 }

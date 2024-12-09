@@ -17,3 +17,9 @@ function ipost($key = null, $default = null)
 {
     return iconfig('ipost' . ($key ? ".$key" : ''), $default);
 }
+
+
+function itype($key = null, $default = null)
+{
+    return app('ilaravel_types')->where('name', $key)->first()?:$key;
+}

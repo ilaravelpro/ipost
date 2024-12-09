@@ -21,7 +21,9 @@ class CreateCommentsTable extends Migration
             $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
             $table->string('name')->nullable();
             $table->longText('text')->nullable();
-            $table->integer('star')->nullable();
+            $table->longText('positive')->nullable();
+            $table->longText('negative')->nullable();
+            $table->double('star')->nullable();
             $table->boolean('like')->nullable();
             $table->string('type')->nullable();
             $table->bigInteger('item')->nullable();

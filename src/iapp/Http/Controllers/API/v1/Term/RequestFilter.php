@@ -20,7 +20,7 @@ trait RequestFilter
             foreach ($filter->value as $index => $parent)
                 $filter->value[$index] = isset($parent['value']) ? $parent['value'] : $parent;
             (new Request((array) $filter))->validate([
-                'value.*' => 'required|exists_serial:Term',
+                'value.*' => 'required|exists:terms,id',
             ]);
             return $filter;
         };
@@ -32,7 +32,7 @@ trait RequestFilter
                         $query = $builder;
                     },
                 ])
-                ->setBindings($query->getBindings(), 'where')
+                //->setBindings($query->getBindings(), 'where')
                 ->whereRaw("({$query->toSql()}) = 0");
         }
         return [$filters, $current];

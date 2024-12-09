@@ -9,24 +9,32 @@
 
 namespace iLaravel\iPost\iApp\Http\Controllers\API\v1;
 
-use iLaravel\Core\iApp\Http\Controllers\API\Controller;
-use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Index;
-use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Show;
-use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Store;
-use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Update;
-use iLaravel\Core\iApp\Http\Controllers\API\Methods\Controller\Destroy;
+use iLaravel\Core\iApp\Http\Controllers\API\ApiController;
+use iLaravel\Core\iApp\Http\Requests\iLaravel as Request;
 
-class CommentController extends Controller
+class CommentController extends ApiController
 {
     public $order_list = ['id', 'title','slug','description','star','like','status',];
 
-    use Index,
-        Show,
-        Store,
-        Update,
-        Destroy,
-        Comment\Filters,
+    use Comment\Filters,
         Comment\QueryFilterType,
         Comment\RequestFilter,
         Comment\RequestData;
+
+    public function _index(Request $request)
+    {
+        $result = parent::_index($request);
+        $additional = $result->additional;
+        for ($i = 0; $i < 4; $i++) {
+            $additional['meta']['statistics']['stars'][$i] = $result->resource->sum(function ($item) use($i) {
+                return $item->stars->filter(function ($item) use($i) {
+                    return $item->title_id == $i+1;
+                })->sum('star');
+            });
+            $additional['meta']['statistics']['avg_stars'] = round(_avg($additional['meta']['statistics']['stars']));
+        }
+        $result->additional($additional);
+        return $result;
+    }
+
 }

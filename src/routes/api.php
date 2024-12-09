@@ -8,7 +8,7 @@
  */
 
 Route::namespace('v1')->prefix('v1')->group(function() {
-    Route::group(['middleware' => ['auth:api']], function () {
+    Route::group(['middleware' => ['authIf:api']], function () {
         if (ipost('routes.api.types.status')) Route::apiResource('types', 'TypeController', ['as' => 'api']);
         if (ipost('routes.api.terms.status')) Route::apiResource('terms', 'TermController', ['as' => 'api']);
         if (ipost('routes.api.tags.status')) Route::apiResource('tags', 'TagController', ['as' => 'api']);
@@ -18,4 +18,7 @@ Route::namespace('v1')->prefix('v1')->group(function() {
         if (ipost('routes.api.likes.status')) Route::apiResource('likes', 'LikeController', ['as' => 'api']);
         //if (ipost('routes.api.liking.status')) Route::post('liking', 'LikeController@liking', ['as' => 'api']);
     });
+});
+Route::namespace('v1')->prefix('v1')->group(function () {
+
 });
