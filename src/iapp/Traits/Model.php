@@ -8,7 +8,6 @@
 namespace iLaravel\iPost\iApp\Traits;
 
 
-
 trait Model
 {
     use \iLaravel\iTranslate\iApp\Traits\Translate;
@@ -17,11 +16,11 @@ trait Model
 
     protected static function iPostBoot()
     {
-        parent::creating(function (self $event){
+        parent::creating(function (self $event) {
             if ($event->hasTableColumn('type') && isset(static::$post_type))
                 $event->type = static::$post_type;
         });
-        parent::deleting(function (self $event){
+        parent::deleting(function (self $event) {
             if (method_exists($event, 'tags'))
                 $event->tags()->detach();
             if (method_exists($event, 'terms'))
@@ -30,8 +29,10 @@ trait Model
                 foreach ($event->translates as $translate) $translate->delete();
         });
     }
-    public function additionalUpdate($request = null, $additional = null, $parent = null){
-        $additional = $additional ? :$this->getAdditional();
+
+    public function additionalUpdate($request = null, $additional = null, $parent = null)
+    {
+        $additional = $additional ?: $this->getAdditional();
         if (method_exists(parent::class, 'additionalUpdate'))
             parent::additionalUpdate($request, $additional, $parent);
         $this->save_terms($additional);
