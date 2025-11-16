@@ -13,12 +13,12 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::smartCreate('comments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('comments')->noActionOnDelete();
             $table->string('name')->nullable();
             $table->longText('text')->nullable();
             $table->longText('positive')->nullable();

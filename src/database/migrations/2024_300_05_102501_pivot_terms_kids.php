@@ -13,7 +13,7 @@ class PivotTermsKids extends Migration
      */
     public function up()
     {
-        Schema::create('terms_kids', function (Blueprint $table) {
+        Schema::smartCreate('terms_kids', function (Blueprint $table) {
             $table->integer('term_id')->unsigned();
             $table->integer('kid_id')->unsigned();
             $table->primary(['term_id' , 'kid_id']);

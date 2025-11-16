@@ -13,7 +13,7 @@ class CreateStarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stars', function (Blueprint $table) {
+        Schema::smartCreate('stars', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');

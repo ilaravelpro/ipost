@@ -19,8 +19,8 @@ class AddImageIdPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->bigInteger('image_id')->nullable()->unsigned()->after('parent_id');
-            $table->foreign('image_id')->references('id')->on('posts');
+            if (!Schema::hasColumn('posts', 'image_id'))
+                $table->foreignId('image_id')->nullable()->constrained('posts')->noActionOnDelete();
         });
     }
 

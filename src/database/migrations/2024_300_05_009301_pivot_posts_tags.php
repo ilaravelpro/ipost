@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PivotPostsTerms extends Migration
+class PivotPostsTags extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class PivotPostsTerms extends Migration
      */
     public function up()
     {
-        Schema::create('posts_terms', function (Blueprint $table) {
+        Schema::smartCreate('posts_tags', function (Blueprint $table) {
             $table->integer('post_id')->unsigned();
-            $table->integer('term_id')->unsigned();
-            $table->primary(['post_id' , 'term_id']);
+            $table->integer('tag_id')->unsigned();
+            $table->primary(['post_id' , 'tag_id']);
         });
     }
 
@@ -27,6 +27,6 @@ class PivotPostsTerms extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts_terms');
+        Schema::dropIfExists('posts_tags');
     }
 }

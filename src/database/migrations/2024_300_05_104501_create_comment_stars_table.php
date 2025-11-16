@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comment_stars', function (Blueprint $table) {
+        Schema::smartCreate('comment_stars', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');
             $table->unsignedBigInteger('comment_id')->nullable();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreign('comment_id')->references('id')->on('comments')->noActionOnDelete();
             $table->unsignedBigInteger('title_id')->nullable();
-            $table->foreign('title_id')->references('id')->on('comment_star_titles')->onDelete('cascade');
+            $table->foreign('title_id')->references('id')->on('comment_star_titles')->noActionOnDelete();
             $table->integer('star')->nullable();
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::smartCreate('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users');

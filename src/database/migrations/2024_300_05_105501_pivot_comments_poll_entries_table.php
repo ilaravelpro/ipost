@@ -13,7 +13,7 @@ class PivotCommentsPollEntriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments_poll_entries', function (Blueprint $table) {
+        Schema::smartCreate('comments_poll_entries', function (Blueprint $table) {
             $table->integer('comment_id')->unsigned();
             $table->integer('poll_entry_id')->unsigned();
             $table->primary(['comment_id' , 'poll_entry_id']);

@@ -13,7 +13,7 @@ class PivotPostsAttachments extends Migration
      */
     public function up()
     {
-        Schema::create('posts_attachments', function (Blueprint $table) {
+        Schema::smartCreate('posts_attachments', function (Blueprint $table) {
             $table->integer('post_id')->unsigned();
             $table->integer('attachment_id')->unsigned();
             $table->string('type')->nullable();
