@@ -21,9 +21,10 @@ class CommentController extends ApiController
         Comment\RequestFilter,
         Comment\RequestData;
 
-    public function _index(Request $request)
+
+    public function _resultIndex($args, $time, $callback)
     {
-        $result = parent::_index($request);
+        $result = parent::_resultIndex($args, $time, $callback);
         $additional = $result->additional;
         for ($i = 0; $i < 4; $i++) {
             $additional['meta']['statistics']['stars'][$i] = $result->resource->sum(function ($item) use($i) {
